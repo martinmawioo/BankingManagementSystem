@@ -62,11 +62,11 @@ public class AccountFrame  extends JFrame {
         citiesCMB = new JComboBox<City>(citiesCMBMDL);
 
         //4- Radio Buttons
-        SelectGenderRDB= new JRadioButton("Select Gender", true);
+       // SelectGenderRDB= new JRadioButton("Select Gender", true);
         maleRDB= new JRadioButton("Male");
         femaleRDB= new JRadioButton("Female");
         genderBTNGRP = new ButtonGroup();
-        genderBTNGRP.add(SelectGenderRDB);
+       // genderBTNGRP.add(SelectGenderRDB);
         genderBTNGRP.add(maleRDB);
         genderBTNGRP.add(femaleRDB);
 
@@ -107,7 +107,7 @@ public class AccountFrame  extends JFrame {
         p1.add(balanceTXT);
         p1.add(CityLBL);
         p1.add(citiesCMB);
-        p1.add(SelectGenderRDB);
+       // p1.add(SelectGenderRDB);
         p1.add(maleRDB);
         p1.add(femaleRDB);
 
@@ -147,12 +147,51 @@ public class AccountFrame  extends JFrame {
             accNoTXT.setText("");
             ownerLBL.setText("");
             citiesCMB.setSelectedIndex(0);
-            SelectGenderRDB.setSelected(true);
+            maleRDB.setSelected(true);
+            //SelectGenderRDB.setSelected(true);
+           // SelectGenderRDB.setSelected(true);
             balanceTXT.setText("");
             amountTXT.setText("");
-            new
+            newRec= true;
+
             }
         });
+        saveBTN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              //insertion
+                if (newRec){
+                    if (ownerTXT.getText().length()!=0){
+                        acc= new Account(
+                                ownerTXT.getText(),
+                                (City) citiesCMB.getSelectedItem(),
+                                maleRDB.isSelected()? 'M': 'F');
+                        accNoTXT.setText(String.valueOf(acc.accNo));
+                        accountSet.add(acc);
+                        accountsLSTMDL.addElement(acc);
+                        newRec = false;
+
+                    }else{
+                        JOptionPane.showMessageDialog(null,"Fill All Fields");
+                    }
+                    //updating
+                }else {
+                    accountSet.remove(acc);
+                    int a= Integer.parseInt(accNoTXT.getText());
+                    String o= ownerTXT.getText();
+                    City c= (City) citiesCMB.getSelectedItem();
+                    char g= maleRDB.isSelected()?'M': 'F';
+                    double b = Double.parseDouble(balanceTXT.getText());
+                    acc = new Account(a,o,c,g,b);
+                    accountSet.add(acc);
+                    accountsLSTMDL.setElementAt(acc,accountLST.getSelectedIndex());
+                    newRec= false;
+
+
+                }
+            }
+        });
+
     }
     public static void main (String[]args){
         AccountFrame af = new AccountFrame();
